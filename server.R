@@ -102,15 +102,17 @@ server <- function(input, output, session) {
                         color = winningColor)
     }
     if (hint$show) {
+      bRange <- diff(range(gCenter$x))
+      buttonSize <- bRange / (2.1 * input$nSquares)
       l <- hint$hints[hint$current]
-      g <- g + annotate("point",
+      g <- g + annotate("tile",
                         x = gCenter$x[l],
                         y = gCenter$y[l],
                         color = "white",
-                        fill = "red",
-                        size = 10,
-                        alpha = 0.7,
-                        pch = 21)
+                        fill = hintColor,
+                        width = 2 * buttonSize,
+                        height = 2 * buttonSize,
+                        alpha = 0.6)
     }
     return(g)
   })

@@ -23,7 +23,7 @@ server <- function(input, output, session) {
 
   # Event Observers ------------------------------------------------------------
   # Reset game
-  observeEvent(c(input$reset, input$nSquares), {
+  observeEvent(c(input$reset, input$nSquares, input$difficulty), {
     x <- rep(0, input$nSquares^2)
     l <- as.integer(input$difficulty)
     nPress <- round(input$nSquares^2 * diffScale[l], 0)

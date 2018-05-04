@@ -6,10 +6,10 @@
 require(tidyverse)
 #require(png)
 #require(grid)
-source("global.R")
+#source("global.R")
 
-onGrob <- readRDS("onGrob.RDS")
-offGrob <- readRDS("offGrob.RDS")
+#onGrob <- readRDS("onGrob.RDS")
+#offGrob <- readRDS("offGrob.RDS")
 
 plotBoard <- function(grid, withGrobs = TRUE) {
   n <- sqrt(length(grid))

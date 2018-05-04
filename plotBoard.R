@@ -63,6 +63,15 @@ plotBoard <- function(grid) {
                                ymin = litButtons$y[i] - buttonSize,
                                ymax = litButtons$y[i] + buttonSize)
 
+    # g <- g + annotate("point",
+    #                   x = litButtons$x[i],
+    #                   y = litButtons$y[i],
+    #                   size = buttonSize * 0.5 * 72,
+    #                   color = "black",
+    #                   alpha = 0.3,
+    #                   pch = 21,
+    #                   fill = "white")
+
   }
   g <- g + theme_void()
 

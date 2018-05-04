@@ -22,7 +22,7 @@ ui <- fluidPage(title = "LightR v1.0",
               style = "background-color: #fefeff;",
               sliderInput(inputId = "nSquares",
                           label = "Board Size:",
-                          min = 3, max = 10, step = 1,
+                          min = 3, max = 7, step = 1,
                           value = 5,
                           round = 1,
                           ticks = FALSE,
@@ -41,7 +41,7 @@ ui <- fluidPage(title = "LightR v1.0",
             )
           ),
           mainPanel(plotOutput(outputId = "board",
-                               height = "600px",
+                               height = "500px",
                                click = "board_click")
           )
         )

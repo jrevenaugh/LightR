@@ -63,7 +63,7 @@ buildA <- function(n) {
     if (i < n) B[i+1,i] <- 1
     if (i > 1) B[i-1,i] <- 1
   }
-  I <- diag(5)
+  I <- diag(nrow = n)
   m <- n^2
   A <- matrix(0, nrow = m, ncol = m)
   for (i in 1:m) {
@@ -83,8 +83,8 @@ buildA <- function(n) {
 # Solve an even determined GA2 problem.  Not needed for lights out.
 solveGA2 <- function(A, b) {
   g <- gaussGA2(A, b)
-  E <- g$A
-  b <- g$b
+  E <- g$E
+  b <- g$r
   n <- nrow(E)
   x <- rep(0, ncol(E))
   i <- n - 1
@@ -99,8 +99,8 @@ solveGA2 <- function(A, b) {
 
 # Matrix-vector multiplication for GA2.
 mmultGA2 <- function(A, b) {
-  x <- rep(0, nrow(A))
-  for (i in seq_along(nrow(A))) {
+  x <- rep(0, ncol(A))
+  for (i in 1:nrow(A)) {
     x[i] <- (t(A[i,]) %*% b) %% 2
   }
   return(x)

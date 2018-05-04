@@ -34,8 +34,8 @@ plotBoard <- function(grid) {
 
 
   g <- ggplot() +
-    scale_y_continuous(limits = c(xMin, xMax)) +
-    scale_x_continuous(limits = c(xMin, xMax)) +
+    scale_y_continuous(limits = c(xMin - 1, xMax + 1)) +
+    scale_x_continuous(limits = c(xMin - 1, xMax + 1)) +
     coord_equal(expand = FALSE) +
 
   # Outline board

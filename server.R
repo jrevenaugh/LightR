@@ -26,6 +26,7 @@ server <- function(input, output, session) {
   # Reacts to New Game button, puzzle size slider and puzzle difficulty
   # selector
   observeEvent(c(input$reset, input$nSquares, input$difficulty), {
+    print("reset")
     x <- rep(0, input$nSquares^2)
     l <- as.integer(input$difficulty)
     nPress <- round(input$nSquares^2 * diffScale[l], 0)
@@ -46,6 +47,7 @@ server <- function(input, output, session) {
   # them.  Reveal a list of sequential hints if player follows them.  Start fresh
   # when they don't.
   observeEvent(input$hint, {
+    print("Hint handler")
     if (!hint$show) {                 # You just got a hint, you need to act
       if (hint$current == 0 | (hint$current >= length(hint$hints))) {
         x <- solveGA2(buildA(input$nSquares), grid$g)
@@ -64,9 +66,11 @@ server <- function(input, output, session) {
   # a hint shown and player follows it, increment hint counter.  If they don't
   # follow it, refresh the counter
   observeEvent(input$board_click, {
+    print("Board click")
     x <- input$board_click$x
     y <- input$board_click$y
     gDist <- sqrt((gCenter$x - x)^2 + (gCenter$y - y)^2)
+    print(length(gDist))
     l <- which.min(gDist)
     boxRow <- (l - 1) %/% input$nSquares + 1
     boxCol <- (l - 1) %% input$nSquares + 1
@@ -87,7 +91,8 @@ server <- function(input, output, session) {
   # Gameboard plot.  Most of the work is done in plotBoard.  Extra items added
   # if last moved solved puzzle or if there's an active hint.
   output$board <- renderPlot({
-    g <- plotBoard(grid$g)
+    print("Plotting")
+    g <- plotBoard(grid$g, input$withGrobs)
     if (winner$yeah) {
       g <- g + annotate("text",
                         x = 2.5,

@@ -13,7 +13,7 @@ onGrob <- rasterGrob( img, interpolate = FALSE )
 img <- readPNG( "off.png" )
 offGrob <- rasterGrob( img, interpolate = FALSE )
 
-plotBoard <- function(grid) {
+plotBoard <- function(grid, withGrobs = TRUE) {
   n <- sqrt(length(grid))
   buttons <- data.frame(x = rep(seq( 0, 5, length.out = n), n),
                         y = rep(seq(5, 0, length.out = n), each = n))
@@ -41,42 +41,44 @@ plotBoard <- function(grid) {
   # Outline board
     geom_polygon(data = square,
                  aes(x, y),
-                 fill = "gray30",
+                 fill = backgroundColor,
                  color = "black",
                  size = 2)
 
   # Add dark buttons
-  for (i in seq_along(darkButtons$x)) {
-    g <- g + annotation_custom(offGrob,
-                               xmin = darkButtons$x[i] - buttonSize,
-                               xmax = darkButtons$x[i] + buttonSize,
-                               ymin = darkButtons$y[i] - buttonSize,
-                               ymax = darkButtons$y[i] + buttonSize)
-
+  if (withGrobs) {
+    for (i in seq_along(darkButtons$x)) {
+        g <- g + annotation_custom(offGrob,
+                                  xmin = darkButtons$x[i] - buttonSize,
+                                  xmax = darkButtons$x[i] + buttonSize,
+                                  ymin = darkButtons$y[i] - buttonSize,
+                                  ymax = darkButtons$y[i] + buttonSize)
+    }
+  } else {
+    g <- g + geom_tile(data = darkButtons, aes(x, y),
+                       width = 2 * buttonSize,
+                       height = 2 * buttonSize,
+                       fill = "springgreen4",
+                       color = "black")
   }
 
   # Add lit buttons
-  for (i in seq_along(litButtons$x)) {
-    g <- g + annotation_custom(onGrob,
-                               xmin = litButtons$x[i] - buttonSize,
-                               xmax = litButtons$x[i] + buttonSize,
-                               ymin = litButtons$y[i] - buttonSize,
-                               ymax = litButtons$y[i] + buttonSize)
-
-    # g <- g + annotate("point",
-    #                   x = litButtons$x[i],
-    #                   y = litButtons$y[i],
-    #                   size = buttonSize * 0.5 * 72,
-    #                   color = "black",
-    #                   alpha = 0.3,
-    #                   pch = 21,
-    #                   fill = "white")
-
+  if (withGrobs) {
+    for (i in seq_along(litButtons$x)) {
+      g <- g + annotation_custom(onGrob,
+                                 xmin = litButtons$x[i] - buttonSize,
+                                 xmax = litButtons$x[i] + buttonSize,
+                                 ymin = litButtons$y[i] - buttonSize,
+                                 ymax = litButtons$y[i] + buttonSize)
+    }
+  } else {
+    g <- g + geom_tile(data = litButtons, aes(x, y),
+                       width = 2 * buttonSize,
+                       height = 2 * buttonSize,
+                       fill = "springgreen",
+                       color = "black")
   }
   g <- g + theme_void()
 
   return(g)
 }
-
-# Should add a second drawing method for grids greater than 7 by 7 so you can put them back in
-# and have the redraw be fast enough.

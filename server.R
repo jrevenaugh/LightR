@@ -31,7 +31,7 @@ server <- function(input, output, session) {
   observeEvent(c(input$reset, input$nSquares, input$difficulty), {
     x <- rep(0, input$nSquares^2)
     l <- as.integer(input$difficulty)
-    nPress <- round(input$nSquares^2 * diffScale[l], 0)
+    nPress <- ceiling(input$nSquares^2 * diffScale[l])
     k <- sample(1:input$nSquares^2, size = nPress)
     x[k] <- 1
     grid$g <- mmultGA2(buildA(input$nSquares), x)
@@ -106,8 +106,8 @@ server <- function(input, output, session) {
       g <- g + annotate("text",
                         x = 2.5,
                         y = 2.5,
-                        label = "Winner!",
-                        size = 50,
+                        label = "!!!",
+                        size = 100,
                         color = winningColor)
     }
     if (hint$show) {

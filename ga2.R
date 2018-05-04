@@ -132,13 +132,13 @@ optimalSolution <- function(b) {
     k <- 2
     for (i in 1:m) {
       cmb <- combn(1:m, i)
-      if (nrow(cmb) > 1) {
-        for (j in 1:ncol(cmb)) {
+      for (j in 1:ncol(cmb)) {
+        if (nrow(cmb) > 1) {
           xs[k,] <- x + apply(N[cmb[,j],], 2, sum)
-          k <- k + 1
+        } else {
+          xs[k,] <- x + N[cmb[1,j],]
         }
-      } else {
-        xs[k,] <- x + N[cmb[1,j],]
+        k <- k + 1
       }
     }
   }

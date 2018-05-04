@@ -123,7 +123,8 @@ mmultGA2 <- function(A, b) {
 # Is it possible to construct a starting grid that is guaranteed to be a solution?
 # Yes, easily.  Simply create an x vector, multiply by A and you've got a puzzle with
 # a solution.  If a null space component sneaks in, who cares?  It won't change the
-# puzzle.
+# puzzle.  Difficulty ought to scale decently well with the number of non-zero entries
+# in x.
 #
 # If you start with a winnable grid, it will remain winnable.
 #

@@ -4,14 +4,12 @@
 # of lights stored as a vector reading row-wise from upper left.  TRUE is lit.
 #
 require(tidyverse)
-require(png)
-require(grid)
+#require(png)
+#require(grid)
 source("global.R")
 
-img <- readPNG( "on.png" )
-onGrob <- rasterGrob( img, interpolate = FALSE )
-img <- readPNG( "off.png" )
-offGrob <- rasterGrob( img, interpolate = FALSE )
+onGrob <- readRDS("onGrob.RDS")
+offGrob <- readRDS("offGrob.RDS")
 
 plotBoard <- function(grid, withGrobs = TRUE) {
   n <- sqrt(length(grid))

@@ -78,32 +78,5 @@ plotBoard <- function(grid) {
   return(g)
 }
 
-
-    # Add dark squares
-  # g <- g +
-  #   geom_point(data = darkCenters, aes(x, y),
-  #              size = buttonSize,
-  #              color = "black",
-  #              fill = "black",
-  #              pch = 22) +
-  #   geom_point(data = darkCenters, aes(x, y),
-  #              size = buttonSize,
-  #              color = "black",
-  #              alpha = 0.3,
-  #              fill = "springgreen4",
-  #              pch = 22) +
-  #
-  #   # Add lighted squares
-  #   geom_point(data = litCenters, aes(x, y),
-  #              size = buttonSize,
-  #              color = "black",
-  #              fill = "springgreen3",
-  #              pch = 22) +
-  #   geom_point(data = litCenters, aes(x, y),
-  #              size = 0.75 * buttonSize,
-  #              alpha = 0.7,
-  #              fill = "springgreen1",
-  #              pch = 22) +
-
-
-
+# Should add a second drawing method for grids greater than 7 by 7 so you can put them back in
+# and have the redraw be fast enough.

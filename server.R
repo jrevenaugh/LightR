@@ -23,6 +23,8 @@ server <- function(input, output, session) {
 
   # Event Observers ------------------------------------------------------------
   # Reset game
+  # Reacts to New Game button, puzzle size slider and puzzle difficulty
+  # selector
   observeEvent(c(input$reset, input$nSquares, input$difficulty), {
     x <- rep(0, input$nSquares^2)
     l <- as.integer(input$difficulty)
@@ -39,7 +41,10 @@ server <- function(input, output, session) {
     hint$show <- FALSE
   })
 
-  # Provide a hint
+  # Provide a hint.  This is a bit difficult.  We want a sequence of hints to
+  # eventually produce a solution.  But it's hard if the player doesn't follow
+  # them.  Reveal a list of sequential hints if player follows them.  Start fresh
+  # when they don't.
   observeEvent(input$hint, {
     if (!hint$show) {                 # You just got a hint, you need to act
       if (hint$current == 0 | (hint$current >= length(hint$hints))) {
@@ -55,7 +60,9 @@ server <- function(input, output, session) {
   }, ignoreInit = FALSE
 )
 
-  # Process toggle if location is valid
+  # Process toggle if location is valid.  Pay attention to hint status--if there's
+  # a hint shown and player follows it, increment hint counter.  If they don't
+  # follow it, refresh the counter
   observeEvent(input$board_click, {
     x <- input$board_click$x
     y <- input$board_click$y
@@ -77,7 +84,8 @@ server <- function(input, output, session) {
   })
 
   # Main Panel -----------------------------------------------------------------
-  # Gameboard plot
+  # Gameboard plot.  Most of the work is done in plotBoard.  Extra items added
+  # if last moved solved puzzle or if there's an active hint.
   output$board <- renderPlot({
     g <- plotBoard(grid$g)
     if (winner$yeah) {

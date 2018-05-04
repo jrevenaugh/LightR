@@ -1,7 +1,20 @@
+# ga2.R
+#
+# Functions for simple linear algebra in Galois 2 (GA2) space.  This is a binary
+# field with -1, 0 and 1 that follows:
+#
+# 1 + 0 = 1
+# 0 + 1 = 1
+# 1 + 1 = 0
+# 1 * 0 = 0
+# 1 * 1 = 1
+# -1 = 1
+#
+# Solvers not for general use--assumes conditions appropriate to Lights Out game.
+#
 # Perform gaussian elimination on matrix A with RHS b.  Returns
 # the reduced row-echelon matrix E (RA) and Rb.
 gaussGA2 <- function(A, b) {
-#  if (nrow(A) != ncol(A)) stop()
   m <- nrow(A)
   n <- m - 1
 
@@ -55,7 +68,7 @@ addGA2 <- function(x, y) {
 }
 
 # Construct an "A" matrix for n by n lights out board.  This is always the
-# 5 lights in a "plus" shape as applied to a square board.
+# n lights in a "plus" shape as applied to a square board.
 buildA <- function(n) {
   B <- matrix(0, nrow = n, ncol = n)
   for (i in 1:n) {
@@ -80,7 +93,7 @@ buildA <- function(n) {
   return(A)
 }
 
-# Solve an even determined GA2 problem.  Not needed for lights out.
+# Solve GA2 problem encountered in Lights Out.
 solveGA2 <- function(A, b) {
   g <- gaussGA2(A, b)
   E <- g$E
@@ -106,6 +119,36 @@ mmultGA2 <- function(A, b) {
   return(x)
 }
 
+# Compute the optimal solution.  Return toggle vector and # button presses.
+optimalSolution <- function(b) {
+  n <- sqrt(length(b))
+  x <- solveGA2(buildA(n), b)
+  N <- nsBasisGA2(n)
+  if (is.null(N)) {
+    return(list(x = x, n = sum(x)))
+  } else {
+    m <- nrow(N)
+    xs <- matrix(x, nrow = 2^m, ncol = n^2, byrow = TRUE)
+    k <- 2
+    for (i in 1:m) {
+      cmb <- combn(1:m, i)
+      if (nrow(cmb) > 1) {
+        for (j in 1:ncol(cmb)) {
+          xs[k,] <- x + apply(N[cmb[,j],], 2, sum)
+          k <- k + 1
+        }
+      } else {
+        xs[k,] <- x + N[cmb[1,j],]
+      }
+    }
+  }
+  xs <- xs %% 2
+  ls <- apply(xs, 1, sum)
+  i <- which.min(ls)
+  return(list(x = xs[i,], n = min(ls)))
+}
+
+# Notes specific to Lights Out.
 # Given a b, first check to see if it has a solution.  Do this by obtaining
 # the null space basis and forming inner products with b.  If they are all
 # zero (modulo 2), then there is a solution.  Another check is to do

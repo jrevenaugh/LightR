@@ -21,18 +21,23 @@ server <- function(input, output, session) {
 
   winner <- reactiveValues(yeah = FALSE)
 
+  solution <- reactiveValues(optimal = 0,
+                             current = 0)
+
   # Event Observers ------------------------------------------------------------
   # Reset game
   # Reacts to New Game button, puzzle size slider and puzzle difficulty
   # selector
   observeEvent(c(input$reset, input$nSquares, input$difficulty), {
-    print("reset")
     x <- rep(0, input$nSquares^2)
     l <- as.integer(input$difficulty)
     nPress <- round(input$nSquares^2 * diffScale[l], 0)
     k <- sample(1:input$nSquares^2, size = nPress)
     x[k] <- 1
     grid$g <- mmultGA2(buildA(input$nSquares), x)
+    X <- optimalSolution(grid$g)
+    solution$optimal <- X$n
+    solution$current <- 0
 
     winner$yeah <- FALSE
     n <- input$nSquares
@@ -47,10 +52,10 @@ server <- function(input, output, session) {
   # them.  Reveal a list of sequential hints if player follows them.  Start fresh
   # when they don't.
   observeEvent(input$hint, {
-    print("Hint handler")
     if (!hint$show) {                 # You just got a hint, you need to act
       if (hint$current == 0 | (hint$current >= length(hint$hints))) {
-        x <- solveGA2(buildA(input$nSquares), grid$g)
+        X <- optimalSolution(grid$g)
+        x <- X$x
         hint$hints <- which(x == 1)
         hint$current <- 1
         hint$show <- TRUE
@@ -66,11 +71,9 @@ server <- function(input, output, session) {
   # a hint shown and player follows it, increment hint counter.  If they don't
   # follow it, refresh the counter
   observeEvent(input$board_click, {
-    print("Board click")
     x <- input$board_click$x
     y <- input$board_click$y
     gDist <- sqrt((gCenter$x - x)^2 + (gCenter$y - y)^2)
-    print(length(gDist))
     l <- which.min(gDist)
     boxRow <- (l - 1) %/% input$nSquares + 1
     boxCol <- (l - 1) %% input$nSquares + 1
@@ -84,14 +87,20 @@ server <- function(input, output, session) {
     if (hint$current > 0) {
       if (l != hint$hints[hint$current]) hint$current <- 0
     }
+    solution$current <- solution$current + 1
     hint$show <- FALSE
   })
+
+  # Render step counter
+  output$nSolution <- renderText(paste0("Shortest: ",
+                                        solution$optimal,
+                                        "\nCurrent: ",
+                                        solution$current))
 
   # Main Panel -----------------------------------------------------------------
   # Gameboard plot.  Most of the work is done in plotBoard.  Extra items added
   # if last moved solved puzzle or if there's an active hint.
   output$board <- renderPlot({
-    print("Plotting")
     g <- plotBoard(grid$g, input$withGrobs)
     if (winner$yeah) {
       g <- g + annotate("text",

@@ -121,8 +121,9 @@ mmultGA2 <- function(A, b) {
 # Say n = 3, then there are: 1 + 3 + 3 + 1 solutions = 2^n.
 #
 # Is it possible to construct a starting grid that is guaranteed to be a solution?
-# Yes, but since roughly (1/2)^n will be solutions, it's probably efficient enough
-# to generate trials grids and test them.
+# Yes, easily.  Simply create an x vector, multiply by A and you've got a puzzle with
+# a solution.  If a null space component sneaks in, who cares?  It won't change the
+# puzzle.
 #
 # If you start with a winnable grid, it will remain winnable.
 #

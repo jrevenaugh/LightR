@@ -8,79 +8,93 @@ require(png)
 require(grid)
 source("global.R")
 
+img <- readPNG( "on.png" )
+onGrob <- rasterGrob( img, interpolate = FALSE )
+img <- readPNG( "off.png" )
+offGrob <- rasterGrob( img, interpolate = FALSE )
+
 plotBoard <- function(grid) {
-  centers <- gCenter
-  centers$gc <- grid
-  openCenters <- centers %>% filter(gc == FALSE)
-  filledCenters <- centers %>% filter(gc == TRUE)
+  n <- sqrt(length(grid))
+  buttons <- data.frame(x = rep(seq( 0, 5, length.out = n), n),
+                        y = rep(seq(5, 0, length.out = n), each = n))
+  buttons$gc <- grid
+  darkButtons <- buttons %>% filter(gc == FALSE)
+  litButtons <- buttons %>% filter(gc == TRUE)
+  bRange <- diff(range(buttons$x))
+  buttonSize <- bRange / (2.1 * n)
+  xRange <- (bRange + 3 * buttonSize) / 2
+  xMean <- mean(buttons$x)
+  xMin <- xMean - xRange
+  xMax <- xMean + xRange
+  yMin <- xMean - xRange
+  yMax <- xMean + xRange
+
+  square <- data.frame( x = c(xMin, xMax, xMax, xMin, xMin),
+                        y = c(yMin, yMin, yMax, yMax, yMin))
+
 
   g <- ggplot() +
-    scale_y_continuous(limits = c(-1, 5)) +
-    scale_x_continuous(limits = c(-1, 5)) +
+    scale_y_continuous(limits = c(xMin, xMax)) +
+    scale_x_continuous(limits = c(xMin, xMax)) +
     coord_equal(expand = FALSE) +
 
-    # Add woodgrain background
-    annotation_custom(grob, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf) +
-
-    # Mask off woodgrain outside of board are
-    geom_polygon(data = mask1, aes(x, y),
-                 fill = "white",
-                 color = "white") +
-    geom_polygon(data = mask2,
+  # Outline board
+    geom_polygon(data = square,
                  aes(x, y),
-                 fill = "white",
-                 color = "white") +
+                 fill = "gray30",
+                 color = "black",
+                 size = 2)
 
-    # Add diagonals
-    geom_path(data = diagonals, aes(x, y),
-              color = "steelblue",
-              size = 3) +
+  # Add dark buttons
+  for (i in seq_along(darkButtons$x)) {
+    g <- g + annotation_custom(offGrob,
+                               xmin = darkButtons$x[i] - buttonSize,
+                               xmax = darkButtons$x[i] + buttonSize,
+                               ymin = darkButtons$y[i] - buttonSize,
+                               ymax = darkButtons$y[i] + buttonSize)
 
-    # Add open holes
-    geom_point(data = openCenters, aes(x, y),
-               size = 10,
-               color = "black",
-               fill = "black",
-               pch = 21) +
+  }
 
-    # Add "pegged" holes
-    geom_point(data = filledCenters, aes(x, y),
-               size = 30,
-               color = "black",
-               fill = "darkgoldenrod",
-               pch = 21) +
-    geom_point(data = filledCenters, aes(x, y),
-               size = 20,
-               color = "black",
-               fill = "goldenrod",
-               pch = 21) +
+  # Add lit buttons
+  for (i in seq_along(litButtons$x)) {
+    g <- g + annotation_custom(onGrob,
+                               xmin = litButtons$x[i] - buttonSize,
+                               xmax = litButtons$x[i] + buttonSize,
+                               ymin = litButtons$y[i] - buttonSize,
+                               ymax = litButtons$y[i] + buttonSize)
 
-    # Outline board
-    geom_path(data = triangle,
-              aes(x, y),
-              color = "black",
-              size = 2) +
-    theme_void()
+  }
+  g <- g + theme_void()
 
   return(g)
 }
 
 
-# plotGrid
-#
-# Make a simple plot of a Riquity grid
+    # Add dark squares
+  # g <- g +
+  #   geom_point(data = darkCenters, aes(x, y),
+  #              size = buttonSize,
+  #              color = "black",
+  #              fill = "black",
+  #              pch = 22) +
+  #   geom_point(data = darkCenters, aes(x, y),
+  #              size = buttonSize,
+  #              color = "black",
+  #              alpha = 0.3,
+  #              fill = "springgreen4",
+  #              pch = 22) +
+  #
+  #   # Add lighted squares
+  #   geom_point(data = litCenters, aes(x, y),
+  #              size = buttonSize,
+  #              color = "black",
+  #              fill = "springgreen3",
+  #              pch = 22) +
+  #   geom_point(data = litCenters, aes(x, y),
+  #              size = 0.75 * buttonSize,
+  #              alpha = 0.7,
+  #              fill = "springgreen1",
+  #              pch = 22) +
 
 
 
-#  Read from local file.
-#  img <- readPNG( "woodgrain.png" )
-#  grob <- rasterGrob( img, interpolate = FALSE )
-
-# Read processed grob stored on github
-grob <- readRDS(url("https://github.com/jrevenaugh/Riquity/raw/master/woodgrain.grob.RDS"))
-
-
-plotGrid <- function(grid) {
-
-
-}

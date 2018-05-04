@@ -42,7 +42,7 @@ gaussGA2 <- function(A, b) {
   return(list(E = A, r = b))
 }
 
-# Determine the null space basis for an n by n lights out board.
+# Determine the null space basis for an n by n Lights Out board.
 # If there is a null space, return the null space basis vectors.
 # Otherwise return NULL
 nsBasisGA2 <- function(n) {
@@ -67,7 +67,7 @@ addGA2 <- function(x, y) {
   return(z)
 }
 
-# Construct an "A" matrix for n by n lights out board.  This is always the
+# Construct an "A" matrix for n by n Lights Out board.  This is always the
 # n lights in a "plus" shape as applied to a square board.
 buildA <- function(n) {
   B <- matrix(0, nrow = n, ncol = n)

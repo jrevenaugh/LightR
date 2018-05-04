@@ -96,7 +96,8 @@ server <- function(input, output, session) {
                         color = "white",
                         fill = "red",
                         size = 10,
-                        pch = 22)
+                        alpha = 0.7,
+                        pch = 21)
     }
     return(g)
   })

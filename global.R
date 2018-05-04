@@ -19,4 +19,4 @@ mask2 <- data.frame( x = c(-1, 5, 5, -1, -1),
 
 winningColor <- "deepskyblue1"
 
-diffScale <- c(0.2, 0.4, 0.6, 0.8)
+diffScale <- c(0.1, 0.25, 0.75, 0.5)

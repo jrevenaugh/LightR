@@ -3,7 +3,7 @@ winningColor <- "deepskyblue1"
 backgroundColor <- "gray90"
 hintColor <- "goldenrod1"
 darkColor = "skyblue4"
-litColor <- "skyblue"
+litColor <- "lightblue"
 
 onGrob <- readRDS(url("https://github.com/jrevenaugh/LightR/raw/master/onGrob.RDS"))
 offGrob <- readRDS(url("https://github.com/jrevenaugh/LightR/raw/master/offGrob.RDS"))

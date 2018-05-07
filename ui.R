@@ -24,7 +24,7 @@ ui <- bootstrapPage(
                                       width = "60%"),
                           checkboxInput(inputId = "withGrobs",
                                         label = "Fancy Buttons",
-                                        value = TRUE),
+                                        value = FALSE),
                           selectInput(inputId = "difficulty",
                                       label = "Difficulty:",
                                       choices = c("Easy" = 1,

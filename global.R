@@ -1,6 +1,6 @@
 # Plotting parameters ----------------------------------------------------------
 winningColor <- "deepskyblue1"
-backgroundColor <- "gray90"
+backgroundColor <- "gray95"
 hintColor <- "goldenrod1"
 darkColor = "skyblue4"
 litColor <- "lightblue"

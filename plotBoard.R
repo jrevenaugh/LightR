@@ -57,7 +57,8 @@ plotBoard <- function(grid, withGrobs = TRUE) {
                        width = 2 * buttonSize,
                        height = 2 * buttonSize,
                        fill = darkColor,
-                       color = "black")
+                       color = "black",
+                       size = 1.5)
   }
 
   # Add lit buttons
@@ -74,7 +75,8 @@ plotBoard <- function(grid, withGrobs = TRUE) {
                        width = 2 * buttonSize,
                        height = 2 * buttonSize,
                        fill = litColor,
-                       color = "black")
+                       color = "white",
+                       size = 1.5)
   }
   g <- g + theme_void()
 

@@ -1,7 +1,9 @@
 # Plotting parameters ----------------------------------------------------------
 winningColor <- "deepskyblue1"
-backgroundColor <- "gray30"
-hintColor = "goldenrod1"
+backgroundColor <- "gray80"
+hintColor <- "goldenrod1"
+darkColor = "skyblue4"
+litColor <- "skyblue"
 
 onGrob <- readRDS(url("https://github.com/jrevenaugh/LightR/raw/master/onGrob.RDS"))
 offGrob <- readRDS(url("https://github.com/jrevenaugh/LightR/raw/master/offGrob.RDS"))

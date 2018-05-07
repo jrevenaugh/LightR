@@ -1,0 +1,8 @@
+require(png)
+require(grid)
+img <- readPNG( "Dark blue button.png" )
+g <- rasterGrob( img, interpolate = FALSE )
+saveRDS(g, "offGrob.RDS")
+img <- readPNG( "Light blue button.png" )
+g <- rasterGrob( img, interpolate = FALSE )
+saveRDS(g, "onGrob.RDS")

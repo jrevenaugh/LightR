@@ -125,4 +125,17 @@ server <- function(input, output, session) {
     }
     return(g)
   })
+
+  observeEvent(input$help, {
+    showModal(modalDialog(
+      title = "Instructions",
+      HTML(paste("Objective: Turn off the all the lights.",
+                 tags$br(), tags$br(),
+                 "Press a square to toggle it and its N-E-W-S neighbors.",
+                 "There's always a solution and you never need to hit the",
+                 "same button more than once")
+      ),
+      easyClose = TRUE)
+    )
+  })
 }

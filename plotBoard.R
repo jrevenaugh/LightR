@@ -41,7 +41,7 @@ plotBoard <- function(grid, withGrobs = TRUE) {
                  aes(x, y),
                  fill = backgroundColor,
                  color = "black",
-                 size = 2)
+                 size = 1)
 
   # Add dark buttons
   if (withGrobs) {
@@ -56,7 +56,7 @@ plotBoard <- function(grid, withGrobs = TRUE) {
     g <- g + geom_tile(data = darkButtons, aes(x, y),
                        width = 2 * buttonSize,
                        height = 2 * buttonSize,
-                       fill = "springgreen4",
+                       fill = darkColor,
                        color = "black")
   }
 
@@ -73,7 +73,7 @@ plotBoard <- function(grid, withGrobs = TRUE) {
     g <- g + geom_tile(data = litButtons, aes(x, y),
                        width = 2 * buttonSize,
                        height = 2 * buttonSize,
-                       fill = "springgreen",
+                       fill = litColor,
                        color = "black")
   }
   g <- g + theme_void()

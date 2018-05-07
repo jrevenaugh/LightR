@@ -6,48 +6,40 @@
 
 require(shiny)
 
-ui <- fluidPage(title = "LightR v1.0",
-        sidebarLayout(
-          sidebarPanel(
-            h3("Lights Out\U2122"),
-            br(),
-            h4("Instructions"),
-            "Objective: Turn off the all the lights.", br(), br(),
-            "Press a square to toggle it and its N-E-W-S neighbors.",
-            "There's always a solution and you never need to hit the",
-            "same button more than once",
-            hr(),
-            wellPanel(
-              style = "background-color: #fefeff;",
-              sliderInput(inputId = "nSquares",
-                          label = "Board Size:",
-                          min = 3, max = 10, step = 1,
-                          value = 5,
-                          round = 1,
-                          ticks = FALSE,
-                          width = "60%"),
-              checkboxInput(inputId = "withGrobs",
-                            label = "Fancy Buttons",
-                            value = TRUE),
-              selectInput(inputId = "difficulty",
-                          label = "Difficulty:",
-                          choices = c("Easy" = 1,
-                                      "Medium" = 2,
-                                      "Hard" = 3,
-                                      "Crazy" = 4),
-                          selected = 2),
-              verbatimTextOutput(outputId = "nSolution",
-                                 placeholder = TRUE),
-              hr(),
-              actionButton(inputId = "reset",
-                           label = "New Game"),
-              actionButton(inputId = "hint",
-                           label = "Hint")
-            )
-          ),
-          mainPanel(plotOutput(outputId = "board",
-                               height = "600px",
-                               click = "board_click")
-          )
-        )
+ui <- bootstrapPage(
+  tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
+  plotOutput(outputId = "board",
+             height = "100%",
+             width = "100%",
+             click = "board_click"),
+
+  absolutePanel(top = 10, left = 10, width = "260px", draggable = TRUE,
+                wellPanel(h4("Lights Out\U2122 V1.0"),
+                          sliderInput(inputId = "nSquares",
+                                      label = "Board Size:",
+                                      min = 3, max = 10, step = 1,
+                                      value = 5,
+                                      round = 1,
+                                      ticks = FALSE,
+                                      width = "60%"),
+                          checkboxInput(inputId = "withGrobs",
+                                        label = "Fancy Buttons",
+                                        value = TRUE),
+                          selectInput(inputId = "difficulty",
+                                      label = "Difficulty:",
+                                      choices = c("Easy" = 1,
+                                                  "Medium" = 2,
+                                                  "Hard" = 3,
+                                                  "Crazy" = 4),
+                                      selected = 2),
+                          verbatimTextOutput(outputId = "nSolution",
+                                             placeholder = TRUE),
+                          actionButton(inputId = "reset",
+                                       label = "New Game"),
+                          actionButton(inputId = "hint",
+                                       label = "Hint"),
+                          actionButton(inputId = "help",
+                                       label = "Help"),
+                          style = "opacity: 0.8; background:#FAFAFA;")
+  )
 )
